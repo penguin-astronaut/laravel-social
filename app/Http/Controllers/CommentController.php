@@ -24,4 +24,18 @@ class CommentController extends Controller
 
         return redirect()->back();
     }
+
+    public function delete(int $id)
+    {
+        $comment = Comment::where('id', $id)
+            ->where(function ($query) {
+               $query
+                   ->where('recipient_id', auth()->id())
+                   ->orWhere('user_id', auth()->id());
+            })->firstOrFail();
+
+        $comment->delete();
+
+        return redirect()->back();
+    }
 }

@@ -17,6 +17,9 @@
 
                             <p>{{$comment->text}}</p>
                         </div>
+                        @if($comment->user->id == auth()->id() || $owner->id === auth()->id())
+                            <a class="btn btn-danger" href="/comment/delete/{{$comment->id}}">Delete</a>
+                        @endif
                         <hr>
                     @endforeach
                     @auth

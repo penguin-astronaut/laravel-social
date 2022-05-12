@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\IndexController::class, 'index']);
 Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'board'])
     ->where('id', '\d+');
+
 Route::post('/comment/create', [\App\Http\Controllers\CommentController::class, 'create']);
+Route::get('/comment/delete/{id}', [\App\Http\Controllers\CommentController::class, 'delete'])
+    ->where('id', '\d+');
 
 Auth::routes(['reset' => false]);
