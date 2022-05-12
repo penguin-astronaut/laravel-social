@@ -3,9 +3,18 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        <div class="col-md-8 mb-5">
+            <div class="card">
+                <div class="card-header">User card</div>
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{$owner->name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Email: {{$owner->email}}</h6>
+                </div>
+            </div>
+        </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Board of user <b>{{$owner->email}}</b></div>
+                <div class="card-header">Comments board</div>
                 <div class="card-body">
                     @foreach($comments as $comment)
                         <div class="flex-column">
