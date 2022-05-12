@@ -14,8 +14,6 @@ class IndexController extends Controller
 
     public function index()
     {
-        $comments = Comment::with('user')->where('recipient_id', auth()->id())->take(5)->get();
-
-        return view('home', ['owner' => auth()->user(), 'comments' => $comments]);
+        return redirect('/profile/' . auth()->id());
     }
 }
