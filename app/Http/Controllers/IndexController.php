@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -13,6 +14,8 @@ class IndexController extends Controller
 
     public function index()
     {
-        return view('home', ['email' => auth()->user()->email]);
+        $comments = Comment::with('user')->where('recipient_id', auth()->id())->take(5)->get();
+
+        return view('home', ['owner' => auth()->user(), 'comments' => $comments]);
     }
 }

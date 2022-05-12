@@ -15,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\IndexController::class, 'index']);
+Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'board'])
+    ->where('id', '\d+');
+Route::post('/comment/create', [\App\Http\Controllers\CommentController::class, 'create']);
 
 Auth::routes(['reset' => false]);
