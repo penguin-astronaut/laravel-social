@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function create(Request $request)
     {
         $validated = $request->validate([
@@ -37,5 +32,25 @@ class CommentController extends Controller
         $comment->delete();
 
         return redirect()->back();
+    }
+
+    public function load(Request $request)
+    {
+        $skip = 5;
+
+        $validated = $request->validate([
+            'recipient_id' => 'required|int',
+        ]);
+
+        $countAll = Comment::with('user')
+            ->where('recipient_id', $validated['recipient_id'])
+            ->count();
+
+        $comments = Comment::with('user')
+            ->where('recipient_id', $validated['recipient_id'])
+            ->skip($skip)
+            ->take($countAll - $skip)
+            ->get();
+        return response()->json(['comments' => $comments]);
     }
 }

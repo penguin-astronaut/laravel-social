@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\{CommentController, IndexController, ProfileController};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -14,12 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\IndexController::class, 'index']);
-Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'board'])
+Route::get('/',[IndexController::class, 'index']);
+Route::get('/profile/{id}', [ProfileController::class, 'board'])
     ->where('id', '\d+');
 
-Route::post('/comment/create', [\App\Http\Controllers\CommentController::class, 'create']);
-Route::get('/comment/delete/{id}', [\App\Http\Controllers\CommentController::class, 'delete'])
-    ->where('id', '\d+');
+Route::middleware('auth')->group(function () {
+    Route::post('/comment/create', [CommentController::class, 'create']);
+    Route::get('/comment/delete/{id}', [CommentController::class, 'delete'])
+        ->where('id', '\d+');
+});
+Route::post('/comment/load', [CommentController::class, 'load']);
 
 Auth::routes(['reset' => false]);
