@@ -23,21 +23,36 @@
                 <div class="card-body">
                     <div class="comments">
                         @foreach($comments as $comment)
-                            <div class="flex-column">
-                                <div class="d-flex align-items-center">
-                                    <p class="mr-1"><strong>{{$comment->title}}</strong></p>
-                                    <p class="text-secondary small mr-1">User: {{$comment->user->email}}</p>
-                                    <p class="text-secondary small">Date: {{$comment->created_at->format('d.m.Y H:i')}}</p>
+                            <div class="comment">
+                                <div class="flex-column">
+                                    <div class="d-flex align-items-center">
+                                        <p class="mr-1"><strong>{{$comment->title}}</strong></p>
+                                        <p class="text-secondary small mr-1">User: {{$comment->user->email}}</p>
+                                        <p class="text-secondary small">Date: {{$comment->created_at->format('d.m.Y H:i')}}</p>
+                                    </div>
+                                    @if($comment->parent_id)
+                                        <blockquote class="blockquote">
+                                            <p class="fst-italic">
+                                                &laquo;{{$comment->parent ? $comment->parent->text : 'Comment is deleted'}}&raquo;
+                                            </p>
+                                        </blockquote>
+                                    @endif
+                                    <p>{{$comment->text}}</p>
                                 </div>
-
-                                <p>{{$comment->text}}</p>
+                                <div class="d-flex">
+                                    <button
+                                        class="btn btn-primary d-block mr-1 reply-comment"
+                                        data-user="{{$comment->user->name}}"
+                                        data-comment-id="{{$comment->id}}"
+                                    >
+                                        Reply
+                                    </button>
+                                    @if($comment->user->id == auth()->id() || $owner->id === auth()->id())
+                                        <a class="btn btn-danger" href="/comment/delete/{{$comment->id}}">Delete</a>
+                                    @endif
+                                </div>
                             </div>
-                            @if($comment->user->id == auth()->id() || $owner->id === auth()->id())
-                                <a class="btn btn-danger" href="/comment/delete/{{$comment->id}}">Delete</a>
-                            @endif
-                            <hr>
                         @endforeach
-
                         @if(count($comments) === 5)
                             <button class="btn btn-info d-block mx-auto text-uppercase m-2 load-comments">
                                 load all comments
@@ -45,7 +60,7 @@
                         @endif
                     </div>
                     @auth
-                        <form method="POST" action="/comment/create">
+                        <form method="POST" action="/comment/create" class="border-top pt-3 mt-3">
                             @csrf
                             <div class="form-group">
                                 <label for="title">Title</label>
@@ -76,4 +91,5 @@
         </div>
     </div>
 </div>
+<script src="{{ asset("js/comments.js") }}"></script>
 @endsection
