@@ -20,10 +20,11 @@ Route::get('/profile/{id}', [ProfileController::class, 'board'])
     ->where('id', '\d+');
 
 Route::middleware('auth')->group(function () {
-    Route::post('/comment/create', [CommentController::class, 'create']);
-    Route::get('/comment/delete/{id}', [CommentController::class, 'delete'])
+    Route::post('/comments/create', [CommentController::class, 'create'])->name('comments.create');
+    Route::get('/comments/delete/{id}', [CommentController::class, 'delete'])->name('comments.delete')
         ->where('id', '\d+');
 });
-Route::post('/comment/load', [CommentController::class, 'load']);
+Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+Route::post('/comments/load', [CommentController::class, 'load'])->name('comments.load');
 
 Auth::routes(['reset' => false]);

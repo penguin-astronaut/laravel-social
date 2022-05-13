@@ -15,7 +15,7 @@ window.replyFormSubmit = async function (e) {
     const fields = Object.fromEntries(data.entries());
     fields._token = window.secureToken;
 
-    const response = await fetch('/comment/create', {
+    const response = await fetch('/comments/create', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -90,7 +90,7 @@ function renderComments(comments) {
 
         let deleteButton = '';
         if (comment.user.id === window.authId || window.authId === window.ownerId) {
-            deleteButton += ` <a class="btn btn-danger" href="/comment/delete/${comment.id}">Delete</a>`
+            deleteButton += ` <a class="btn btn-danger" href="/comments/delete/${comment.id}">Delete</a>`
         }
         const buttons = `<div class="d-flex">
             <button
@@ -128,7 +128,7 @@ function formatDate(date) {
 
 loadCommentsButton &&
 loadCommentsButton.addEventListener('click', () => {
-    fetch('/comment/load', {
+    fetch('/comments/load', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

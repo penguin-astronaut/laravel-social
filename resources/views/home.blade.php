@@ -48,7 +48,7 @@
                                         Reply
                                     </button>
                                     @if($comment->user->id == auth()->id() || $owner->id === auth()->id())
-                                        <a class="btn btn-danger" href="/comment/delete/{{$comment->id}}">Delete</a>
+                                        <a class="btn btn-danger" href="{{ route('comments.delete', [$comment->id]) }}">Delete</a>
                                     @endif
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                         @endif
                     </div>
                     @auth
-                        <form method="POST" action="/comment/create" class="border-top pt-3 mt-3">
+                        <form method="POST" action="{{route('comments.create')}}" class="border-top pt-3 mt-3">
                             @csrf
                             <div class="form-group">
                                 <label for="title">Title</label>
