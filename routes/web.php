@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[IndexController::class, 'index']);
-Route::get('/profile/{id}', [ProfileController::class, 'board'])
+
+Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles');
+Route::get('/profile/{id}', [ProfileController::class, 'board'])->name('profile')
     ->where('id', '\d+');
 
 Route::middleware('auth')->group(function () {

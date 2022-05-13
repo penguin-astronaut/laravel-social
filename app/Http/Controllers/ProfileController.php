@@ -8,6 +8,13 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        $users = User::all();
+
+        return view('users', ['users' => $users]);
+    }
+
     public function board(int $userId)
     {
         $user = User::findOrFail($userId);
