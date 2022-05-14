@@ -1,6 +1,11 @@
 <?php
 
-use App\Http\Controllers\{CommentController, IndexController, ProfileController};
+use App\Http\Controllers\{
+    CommentController,
+    IndexController,
+    ProfileController,
+    BooksController,
+};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +33,27 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/comments/load', [CommentController::class, 'load'])->name('comments.load');
+
+
+Route::name('books.')
+    ->prefix('books')
+    ->middleware('owner')
+    ->group(function () {
+        Route::get('/', [BooksController::class, 'index'])
+            ->name('index')
+            ->middleware('auth')
+            ->withoutMiddleware(['owner']);
+        Route::get('/create', [BooksController::class, 'create'])->name('create');
+        Route::post('/', [BooksController::class, 'store'])->name('store');
+        Route::get('/{book}', [BooksController::class, 'show'])->name('show')
+            ->where('id', '\d+');
+        Route::get('/{book}/edit', [BooksController::class, 'edit'])->name('edit')
+            ->where('id', '\d+');
+        Route::put('/{book}', [BooksController::class, 'update'])->name('update')
+            ->where('id', '\d+');
+        Route::delete('/{book}', [BooksController::class, 'destroy'])->name('destroy')
+            ->where('id', '\d+');
+    });
+
 
 Auth::routes(['reset' => false]);
