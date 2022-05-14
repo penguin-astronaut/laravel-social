@@ -51,7 +51,7 @@ Route::name('books.')
             ->where('id', '\d+');
         Route::put('/{book}', [BooksController::class, 'update'])->name('update')
             ->where('id', '\d+');
-        Route::delete('/{book}', [BooksController::class, 'destroy'])->name('destroy')
+        Route::get('/{book}/delete', [BooksController::class, 'destroy'])->name('destroy')
             ->where('id', '\d+');
     });
 
