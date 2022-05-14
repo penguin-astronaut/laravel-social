@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class OwnerMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Check if user book and add book to request
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
@@ -21,9 +21,12 @@ class OwnerMiddleware
             return redirect()->route('login');
         }
 
-        Books::where('id', $request->route('book'))
+        $book = Books::where('id', $request->route('book'))
             ->where('user_id', auth()->id())
             ->firstOrFail();
+
+
+        $request->merge(['book' => $book]);
 
         return $next($request);
     }
