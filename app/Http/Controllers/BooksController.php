@@ -41,14 +41,17 @@ class BooksController extends Controller
     {
         $book = Books::findOrFail($id);
 
-        if (!$book->shared && auth()->id() && ($book->user_id !== auth()->id())) {
+        if (!$book->shared && !auth()->id()) {
+            return abort(404);
+        }
+
+        if (!$book->shared && $book->user_id !== auth()->id()) {
             $hasAccess = DB::table('books_access')
                 ->where('owner_id', $book->user_id)
                 ->where('reader_id', auth()->id())
                 ->first();
-
             if (!$hasAccess) {
-                abort(404, 'Page not found');
+               return abort(404);
             }
         }
 
