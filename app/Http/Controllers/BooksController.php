@@ -93,10 +93,19 @@ class BooksController extends Controller
         return redirect()->back();
     }
 
-    public function sharedAll(Request $request)
+    public function unshared(Request $request)
     {
         $request->get('book')->shared = false;
         $request->get('book')->save();
+
+        return redirect()->back();
+    }
+
+    public function sharedAll(int $userId)
+    {
+        $user = auth()->user();
+        User::findOrFail($userId);
+        $user->readers()->attach($userId);
 
         return redirect()->back();
     }
