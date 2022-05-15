@@ -25,12 +25,6 @@ Route::get('/',[IndexController::class, 'index']);
 Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles');
 Route::get('/profile/{id}', [ProfileController::class, 'board'])->name('profile')
     ->where('id', '\d+');
-Route::get('/profile/{id}/shared', [ProfileController::class, 'shared'])->name('profile.shared')
-    ->where('id', '\d+')
-    ->middleware('auth');
-Route::get('/profile/{id}/unshared', [ProfileController::class, 'unshared'])->name('profile.unshared')
-    ->where('id', '\d+')
-    ->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::post('/comments/create', [CommentController::class, 'create'])->name('comments.create');
