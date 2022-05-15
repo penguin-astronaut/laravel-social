@@ -25,6 +25,12 @@ Route::get('/',[IndexController::class, 'index']);
 Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles');
 Route::get('/profile/{id}', [ProfileController::class, 'board'])->name('profile')
     ->where('id', '\d+');
+Route::get('/profile/{id}/shared', [ProfileController::class, 'shared'])->name('profile.shared')
+    ->where('id', '\d+')
+    ->middleware('auth');
+Route::get('/profile/{id}/unshared', [ProfileController::class, 'unshared'])->name('profile.unshared')
+    ->where('id', '\d+')
+    ->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::post('/comments/create', [CommentController::class, 'create'])->name('comments.create');
@@ -37,13 +43,14 @@ Route::post('/comments/load', [CommentController::class, 'load'])->name('comment
 
 Route::name('books.')
     ->prefix('books')
+    ->controller(BooksController::class)
     ->group(function () {
         Route::middleware('owner')->group(function () {
-            Route::get('/{book}/edit', [BooksController::class, 'edit'])->name('edit')
+            Route::get('/{book}/edit', 'edit')->name('edit')
                 ->where('id', '\d+');
-            Route::put('/{book}', [BooksController::class, 'update'])->name('update')
+            Route::put('/{book}', 'update')->name('update')
                 ->where('id', '\d+');
-            Route::get('/{book}/delete', [BooksController::class, 'destroy'])->name('destroy')
+            Route::get('/{book}/delete', 'destroy')->name('destroy')
                 ->where('id', '\d+');
         });
 
@@ -51,6 +58,10 @@ Route::name('books.')
             Route::get('/', [BooksController::class, 'index'])->name('index');
             Route::get('/create', [BooksController::class, 'create'])->name('create');
             Route::post('/', [BooksController::class, 'store'])->name('store');
+            Route::get('/{user}/shared_all', 'sharedAll')->name('shared_all')
+                ->where('id', '\d+');
+            Route::get('/{user}/unshared_all', 'unsharedAll')->name('unshared_all')
+                ->where('id', '\d+');
         });
 
         Route::get('/{book}', [BooksController::class, 'show'])->name('show')

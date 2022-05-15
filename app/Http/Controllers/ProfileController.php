@@ -17,12 +17,14 @@ class ProfileController extends Controller
 
     public function board(int $userId)
     {
-        $user = User::findOrFail($userId);
+        $user = User::with('hasLibraryAccess')->findOrFail($userId);
         $comments = Comment::with(['user', 'parent'])
             ->where('recipient_id', $userId)
             ->take(5)
             ->get();
 
-        return view('home', ['comments' => $comments, 'owner' => $user]);
+        $isActiveAccess = $user->hasLibraryAccess->first(fn($val) => $val->id === auth()->id());
+
+        return view('home', ['comments' => $comments, 'owner' => $user, 'isActiveAccess' => $isActiveAccess]);
     }
 }

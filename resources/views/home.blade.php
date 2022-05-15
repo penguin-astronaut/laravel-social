@@ -15,6 +15,13 @@
                     <h5 class="card-title">Name: {{$owner->name}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Email: {{$owner->email}}</h6>
                 </div>
+                @auth
+                    @if($isActiveAccess)
+                        <a href="{{route('books.unshared_all', $owner->id)}}" class="btn btn-warning">Disable library access</a>
+                    @elseif($owner->id !== auth()->id())
+                        <a href="{{route('books.shared_all', $owner->id)}}" class="btn btn-primary">Give access to the library</a>
+                    @endif
+                @endauth
             </div>
         </div>
         <div class="col-md-8">

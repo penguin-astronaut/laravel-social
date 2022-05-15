@@ -55,4 +55,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Books::class);
     }
+
+    public function readers()
+    {
+        return $this->belongsToMany(self::class, 'books_access', 'owner_id', 'reader_id');
+    }
+
+    public function hasLibraryAccess()
+    {
+        return $this->belongsToMany(self::class, 'books_access', 'reader_id', 'owner_id');
+    }
 }
