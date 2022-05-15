@@ -85,12 +85,18 @@ class BooksController extends Controller
         return redirect()->route('books.index');
     }
 
-    public function sharedAll(int $userId)
+    public function shared(Request $request)
     {
-        $user = auth()->user();
+        $request->get('book')->shared = true;
+        $request->get('book')->save();
 
-        User::findOrFail($userId);
-        $user->readers()->attach($userId);
+        return redirect()->back();
+    }
+
+    public function sharedAll(Request $request)
+    {
+        $request->get('book')->shared = false;
+        $request->get('book')->save();
 
         return redirect()->back();
     }

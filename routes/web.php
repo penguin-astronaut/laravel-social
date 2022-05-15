@@ -52,6 +52,10 @@ Route::name('books.')
                 ->where('id', '\d+');
             Route::get('/{book}/delete', 'destroy')->name('destroy')
                 ->where('id', '\d+');
+            Route::get('/{book}/shared', 'shared')->name('shared')
+                ->where('id', '\d+');
+            Route::get('/{book}/unshared', 'unshared')->name('unshared')
+                ->where('id', '\d+');
         });
 
         Route::middleware('auth')->group(function () {
