@@ -26,13 +26,20 @@ Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles');
 Route::get('/profile/{id}', [ProfileController::class, 'board'])->name('profile')
     ->where('id', '\d+');
 
-Route::middleware('auth')->group(function () {
-    Route::post('/comments/create', [CommentController::class, 'create'])->name('comments.create');
-    Route::get('/comments/delete/{id}', [CommentController::class, 'delete'])->name('comments.delete')
-        ->where('id', '\d+');
-});
-Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
-Route::post('/comments/load', [CommentController::class, 'load'])->name('comments.load');
+
+Route::name('comments.')
+    ->prefix('comments')
+    ->controller(CommentController::class)
+    ->group(function () {
+        Route::middleware('auth')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/create', 'create')->name('create');
+            Route::get('/delete/{id}', 'delete')->name('delete')
+                ->where('id', '\d+');
+        });
+
+        Route::post('/load',  'load')->name('load');
+    });
 
 
 Route::name('books.')
