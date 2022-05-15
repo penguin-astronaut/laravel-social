@@ -37,21 +37,23 @@ Route::post('/comments/load', [CommentController::class, 'load'])->name('comment
 
 Route::name('books.')
     ->prefix('books')
-    ->middleware('owner')
     ->group(function () {
-        Route::get('/', [BooksController::class, 'index'])
-            ->name('index')
-            ->middleware('auth')
-            ->withoutMiddleware(['owner']);
-        Route::get('/create', [BooksController::class, 'create'])->name('create');
-        Route::post('/', [BooksController::class, 'store'])->name('store');
+        Route::middleware('owner')->group(function () {
+            Route::get('/{book}/edit', [BooksController::class, 'edit'])->name('edit')
+                ->where('id', '\d+');
+            Route::put('/{book}', [BooksController::class, 'update'])->name('update')
+                ->where('id', '\d+');
+            Route::get('/{book}/delete', [BooksController::class, 'destroy'])->name('destroy')
+                ->where('id', '\d+');
+        });
+
+        Route::middleware('auth')->group(function () {
+            Route::get('/', [BooksController::class, 'index'])->name('index');
+            Route::get('/create', [BooksController::class, 'create'])->name('create');
+            Route::post('/', [BooksController::class, 'store'])->name('store');
+        });
+
         Route::get('/{book}', [BooksController::class, 'show'])->name('show')
-            ->where('id', '\d+');
-        Route::get('/{book}/edit', [BooksController::class, 'edit'])->name('edit')
-            ->where('id', '\d+');
-        Route::put('/{book}', [BooksController::class, 'update'])->name('update')
-            ->where('id', '\d+');
-        Route::get('/{book}/delete', [BooksController::class, 'destroy'])->name('destroy')
             ->where('id', '\d+');
     });
 
