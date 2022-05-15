@@ -33,7 +33,17 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('profiles') }}">Users</a>
+                        </li>
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('books.index') }}">My Books</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('comments.index') }}">My Comments</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
