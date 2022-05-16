@@ -37,25 +37,9 @@ class BooksController extends Controller
         return redirect()->route('books.index');
     }
 
-    public function show(int $id)
+    public function show(Request $request)
     {
-        $book = Books::findOrFail($id);
-
-        if (!$book->shared && !auth()->id()) {
-            return abort(404);
-        }
-
-        if (!$book->shared && $book->user_id !== auth()->id()) {
-            $hasAccess = DB::table('books_access')
-                ->where('owner_id', $book->user_id)
-                ->where('reader_id', auth()->id())
-                ->first();
-            if (!$hasAccess) {
-               return abort(404);
-            }
-        }
-
-        return view('books.show', ['book' => $book]);
+        return view('books.show', ['book' => $request->get('book')]);
     }
 
     public function edit(Request $request)

@@ -69,8 +69,10 @@ Route::name('books.')
                 ->where('id', '\d+');
         });
 
-        Route::get('/{book}', [BooksController::class, 'show'])->name('show')
-            ->where('id', '\d+');
+        Route::get('/{book}', [BooksController::class, 'show'])
+            ->name('show')
+            ->where('id', '\d+')
+            ->middleware('book_access');
     });
 
 
