@@ -21,8 +21,7 @@
                             </div>
                             <div class="form-group mb-2">
                                 <label for="text">Text</label>
-                                <textarea id="text" name="text" class="form-control @error('text') is-invalid @enderror">
-                                </textarea>
+                                <textarea id="text" name="text" class="form-control @error('text') is-invalid @enderror"></textarea>
                                 @error('text')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{$message}}</strong>

@@ -69,6 +69,7 @@ class User extends Authenticatable
 
     public function hasBooksAccess(int $ownerId)
     {
+        $this->hasOne('');
         return DB::table('books_access')
             ->where('owner_id', $ownerId)
             ->where('reader_id', $this->id)
